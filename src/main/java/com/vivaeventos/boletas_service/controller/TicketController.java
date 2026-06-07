@@ -4,6 +4,8 @@ import com.vivaeventos.boletas_service.dto.CreateTicketRequest;
 import com.vivaeventos.boletas_service.model.Ticket;
 import com.vivaeventos.boletas_service.service.TicketService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,5 +35,18 @@ public class TicketController {
     @GetMapping
     public List<Ticket> getAllTickets() {
         return service.getAllTickets();
+    }
+
+    @GetMapping(
+            value = "/{id}/qr",
+            produces = MediaType.IMAGE_PNG_VALUE
+    )
+    public ResponseEntity<byte[]> getQrCode(
+            @PathVariable UUID id
+    ) {
+
+        return ResponseEntity.ok(
+                service.getQrCode(id)
+        );
     }
 }

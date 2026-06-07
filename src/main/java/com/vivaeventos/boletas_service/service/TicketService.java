@@ -15,6 +15,7 @@ import java.util.UUID;
 public class TicketService {
 
     private final TicketRepository repository;
+    private final QrCodeService qrCodeService;
 
     public Ticket createTicket(CreateTicketRequest request) {
 
@@ -37,5 +38,15 @@ public class TicketService {
 
     public List<Ticket> getAllTickets() {
         return repository.findAll();
+    }
+
+    public byte[] getQrCode(UUID ticketId) {
+
+        Ticket ticket = repository.findById(ticketId)
+                .orElseThrow();
+
+        return qrCodeService.generateQrCode(
+                ticket.getQrCode()
+        );
     }
 }
